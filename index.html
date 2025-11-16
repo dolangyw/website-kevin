@@ -1,336 +1,376 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Profile Card + Comments (Firebase)</title>
-  <link rel="stylesheet" href="./style.css" />
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Kevin Fernando</title>
+<link rel="stylesheet" href="./style.css"/>
+<link rel="manifest" href="./manifest.json"/>
+<meta name="theme-color" content="#4f46e5"/>
+<link rel="icon" href="./pet.gif"/>
 </head>
 <body>
-    <div id="particles" aria-hidden="true"></div>
-    <div id="topNotification" class="top-notification" aria-hidden="true"></div>
-
-  <div class="menu-btn" id="menuBtn" aria-label="Open menu" title="Menu">
-    <div class="menu-icon"></div>
-  </div>
-
-  <aside class="drawer" id="drawer" aria-hidden="true">
-    <h3 class="center">Menu</h3>
-    <nav>
-      <a class="nav-link" href="#" data-page="home">Profile</a>
-      <a class="nav-link" href="#" data-page="skill">Skill</a>
-
-<a class="nav-link" href="#" data-page="dashboard">Dashboard</a>
-
-      <a class="nav-link" href="#" data-page="comments">Komentar</a>
-      <a class="nav-link" href="#" data-page="about">Tentang</a>
-    </nav>
-    <div style="flex:1"></div>
-    <div class="small-muted">Ada beberapa easter egg di website ini</div>
-  </aside>
-
-  <main class="app" id="app">
-    
-    <section id="home" class="page active">
-
-      <div class="center">
-        <div class="card-wrap" title="Klik kartu untuk flip">
-          <div class="card" id="profileCard" role="button" tabindex="0" aria-pressed="false">
-       
-            <div class="card-face front" aria-hidden="false">
-              <div class="avatar" id="frontAvatar">
-                <img src="https://i.ibb.co.com/gZBfwYLY/IMG-20251021-145934.jpg" alt="avatar"/>
-              </div>
-              <div class="name animated-title" id="animatedTitle" >Kevin Fernando</div>
-              <div class="desc" id="frontDesc">Game Developer & Full Stack Developer. Saya suka membuat dan memperbaiki kode program.</div>
-              <div class="desc muted-small" id="frontDesc2">heker wibu tzy.</div>
-            </div>
-
-         
-             <div class="card-face back" aria-hidden="true">
-    <div class="alt-avatar avatar" id="backAvatar">
- 
-      <img src="https://iili.io/fHAQWfs.jpg" alt="avatar2">
-    
-      <div class="badge">
-        <img src="https://iili.io/fHAbEvf.gif" alt="badge"/>
- 
-      </div>
-    </div>
-
-    <div class="name" id="backName">Rany Amelia Sari</div>
-    <div class="desc">dia adalah mykisah >//<.</div>
-    <div class="desc muted-small">hanya watashi yang boleh mendekatinya.</div>
-    <div class="flip-hint">ringam heker</div>
-  </div>
-
- 
-  <div class="love-rain" id="loveRain" aria-hidden="true"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-<section id="dashboard" class="page">
-  <div class="dash-container" style="max-width:980px;margin:0 auto;padding:18px;">
-    <h2>Dashboard</h2>
-    <p class="muted-small">Statistik realtime & ringkasan penggunaan website.</p>
-
-    <div class="dash-grid">
-      <div class="dash-card" id="cardTotalVisits">
-        <div class="dash-title">Total Visits</div>
-        <div class="dash-value" id="totalVisits">—</div>
-        <div class="dash-sub muted-small">Unique visitors / semua waktu</div>
-      </div>
-
-      <div class="dash-card" id="cardTodayVisits">
-        <div class="dash-title">Visits Hari Ini</div>
-        <div class="dash-value" id="todayVisits">—</div>
-        <div class="dash-sub muted-small">Visits berdasarkan tanggal lokal</div>
-      </div>
-
-      <div class="dash-card" id="cardUnique">
-        <div class="dash-title">Unique Visitors</div>
-        <div class="dash-value" id="uniqueVisitors">—</div>
-        <div class="dash-sub muted-small">Berdasarkan localStorage id</div>
-      </div>
-
-      <div class="dash-card" id="cardAvgSession">
-        <div class="dash-title">Avg Session (s)</div>
-        <div class="dash-value" id="avgSession">—</div>
-        <div class="dash-sub muted-small">Durasi rata2 sesi (perkiraan)</div>
-      </div>
-    </div>
-
-    <div style="margin-top:18px;display:flex;gap:18px;flex-wrap:wrap;">
-      <div style="flex:1;min-width:300px;">
-        <div class="dash-panel">
-          <div class="panel-head">Visits (30 hari terakhir)</div>
-          <canvas id="visitsChart" height="180"></canvas>
-        </div>
-      </div>
-      <div style="flex:1;min-width:300px;">
-        <div class="dash-panel">
-          <div class="panel-head">Recent activity</div>
-          <ul id="recentList" class="recent-list">
-            <li class="muted-small">memuat…</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top:18px;">
-      <div class="dash-panel">
-        <div class="panel-head">Komentar Terbaru</div>
-        <div id="recentComments" class="recent-comments muted-small">memuat…</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-    <section id="comments" class="page">
-      <div style="max-width:940px;margin:0 auto;">
-        <h2 class="center" style="margin:0 0 12px 0">Komentar</h2>
-        <div class="comments-wrap" id="commentsWrap">
-
-        </div>
-
-        <div style="margin-top:18px;max-width:720px;margin-left:auto;margin-right:auto;">
-          <form id="commentForm" class="comment-form" onsubmit="return false;">
-            <input type="text" id="authorInput" placeholder="Nama (required)" required />
-            <input type="text" id="commentInput" placeholder="Tulis komentar..." required />
-            <button class="btn" id="sendBtn" type="submit">Kirim</button>
-          </form>
-          <div style="margin-top:8px" class="small-muted">Jangan komen aneh aneh bang:v</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="skill" class="page">
-    
-  <div class="skill-container" style="max-width:960px;margin:0 auto;padding:18px;">
-    <h2 style="margin:0 0 8px 0">Skill</h2>
-    <p class="muted-small" style="margin-bottom:18px;">
-      Saya memiliki beberapa kemampuan dibidang anu. Berikut beberapa kemampuan saya dibidang anu
-    </p>
-   
-
-    <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px;">
-  <div style="flex:1;min-width:260px;">
-    <canvas id="skillChart" width="400" height="400"></canvas>
-  </div>
-  <div style="flex:1;min-width:260px;">
-    <div class="muted-small">awokawokwok</div>
-  </div>
+<div id="loadingOverlay" class="loading-overlay" role="status" aria-live="polite">
+	<div class="loader-box" role="img" aria-label="Loading content">
+		<div class="logo-outer" aria-hidden="true">
+			<div class="logo-core"></div>
+			<svg class="logo-ring" viewbox="0 0 100 100" aria-hidden="true">
+			<circle cx="50" cy="50" r="44" stroke-width="4" fill="none"/>
+			</svg>
+		</div>
+		<div class="loader-title">Memuat situs...</div>
+		<div class="loader-bar" aria-hidden="true">
+			<div class="loader-fill" id="loadingFill"></div>
+			<div class="loader-shimmer"></div>
+		</div>
+		<div class="loader-bottom">
+			<div class="loader-percent" id="loadingPercent">0%</div>
+			<div class="loader-hint muted-small">Klik di mana saja untuk memulai interaksi</div>
+		</div>
+	</div>
+	<div id="loaderParticles" class="loader-particles" aria-hidden="true"></div>
 </div>
- 
-    <div class="skill-category" data-category="Bahasa Pemrograman">
-      <div class="category-head">
-        <h3>Bahasa Pemrograman</h3>
-        <div class="category-desc muted-small">Masih pemula</div>
-      </div>
-      <div class="skill-list">
-        <div class="skill-row">
-          <div class="skill-label">JavaScript</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="69">
-              <span class="skill-fill"></span>
-            </div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
+<div id="particles" aria-hidden="true"></div>
+<div id="topNotification" class="top-notification" aria-hidden="true"></div>
+<div class="menu-btn" id="menuBtn" aria-label="Open menu" title="Menu">
+	<div class="menu-icon"></div>
+</div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+<h3 class="center">Menu</h3>
+<nav>
+<a class="nav-link" href="#" data-page="home">Profile</a>
+<a class="nav-link" href="#" data-page="skill">Skill</a>
+<a class="nav-link" href="#" data-page="dashboard">Informasi</a>
+<a class="nav-link" href="#" data-page="timeline">Timeline</a>
+<a class="nav-link" href="#" data-page="chatbot">Chat bot</a>
+<a class="nav-link" href="#" data-page="comments">Komentar</a>
+<a class="nav-link" href="#" data-page="about">Tentang</a>
+</nav>
+<div style="flex:1"></div>
+<div class="small-muted">Ada beberapa easter egg di website ini</div>
+</aside>
+<main class="app" id="app">
+<section id="home" class="page active">
+<div class="center">
+	<div class="card-wrap" title="Klik kartu untuk flip">
+		<div class="card" id="profileCard" role="button" tabindex="0" aria-pressed="false">
+			<div class="card-face front" aria-hidden="false">
+				<div class="alt-avatar" id="frontAvatar">
+					<img style="width:100%;height:100%;object-fit:cover;display:block;" src="https://i.ibb.co.com/gZBfwYLY/IMG-20251021-145934.jpg" alt="avatar"/>
+				</div>
+				<div class="name animated-title" id="animatedTitle">Kevin Fernando</div>
+				<div class="desc" id="frontDesc">
+					Game Developer & Full Stack Developer. Saya suka membuat dan memperbaiki kode program.
+				</div>
+				<div class="flip-hint">heker wibu tzy.</div>
+			</div>
+			<div class="card-face back" aria-hidden="true">
+				<div class="alt-avatar avatar" id="backAvatar">
+					<img src="https://iili.io/fHAQWfs.jpg" alt="avatar2">
+					<div class="badge">
+						<img src="https://iili.io/fHAbEvf.gif" alt="badge"/>
+					</div>
+				</div>
+				<div class="name" id="backName">Rany Amelia Sari</div>
+				<div class="desc">
+					dia adalah mykisah >//<.</div>
+					<div class="desc muted-small">hanya watashi yang boleh mendekatinya.</div>
+					<div class="flip-hint">ringam heker</div>
+				</div>
+				<img class="side-img left-img" src="./gojo1.png" alt="left">
+			</div>
+		</div>
+	</div>
+	</section>
+	<section id="dashboard" class="page">
+	<div class="dash-container" style="max-width:980px;margin:0 auto;padding:18px;">
+		<h2>Dashboard</h2>
+		<p class="muted-small">Statistik realtime & ringkasan penggunaan website.</p>
+		<div class="dash-grid">
+			<div class="dash-card" id="cardTotalVisits">
+				<div class="dash-title">Total Visits</div>
+				<div class="dash-value" id="totalVisits">—</div>
+				<div class="dash-sub muted-small">Unique visitors / semua waktu</div>
+			</div>
+			<div class="dash-card" id="cardTodayVisits">
+				<div class="dash-title">Visits Hari Ini</div>
+				<div class="dash-value" id="todayVisits">—</div>
+				<div class="dash-sub muted-small">Visits berdasarkan tanggal lokal</div>
+			</div>
+			<div class="dash-card" id="cardUnique">
+				<div class="dash-title">Unique Visitors</div>
+				<div class="dash-value" id="uniqueVisitors">—</div>
+				<div class="dash-sub muted-small">Berdasarkan localStorage id</div>
+			</div>
+			<div class="dash-card" id="cardAvgSession">
+				<div class="dash-title">Avg Session (s)</div>
+				<div class="dash-value" id="avgSession">—</div>
+				<div class="dash-sub muted-small">Durasi rata2 sesi (perkiraan)</div>
+			</div>
+		</div>
+		<div style="margin-top:18px;">
+			<div class="dash-panel">
+				<div class="panel-head">Komentar Terbaru</div>
+				<div id="recentComments" class="recent-comments muted-small">memuat…</div>
+			</div>
+		</div>
+	</div>
+	</section>
+	<section id="comments" class="page">
+	<div style="max-width:940px;margin:0 auto;">
+		<h2 class="center" style="margin:0 0 12px 0">Komentar</h2>
+		<div class="comments-wrap" id="commentsWrap"></div>
+		<div style="margin-top:18px;max-width:720px;margin-left:auto;margin-right:auto;">
+			<form id="commentForm" class="comment-form" onsubmit="return false;">
+				<input type="text" id="authorInput" placeholder="Nama (required)" required/>
+				<input type="text" id="commentInput" placeholder="Tulis komentar..." required/>
+				<button class="btn" id="sendBtn" type="submit">Kirim</button>
+			</form>
+			<div style="margin-top:8px" class="small-muted">Jangan komen aneh aneh bang:v</div>
+		</div>
+	</div>
+	</section>
+	<section id="skill" class="page">
+	<div class="skill-container" style="max-width:960px;margin:0 auto;padding:18px;">
+		<h2 style="margin:0 0 8px 0">Skill</h2>
+		<p class="muted-small" style="margin-bottom:18px;">
+			 Saya memiliki beberapa kemampuan dibidang anu. Berikut beberapa kemampuan saya dibidang anu
+		</p>
+		<div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px;">
+			<div style="flex:1;min-width:260px;">
+				<canvas id="skillChart" width="400" height="400"></canvas>
+			</div>
+			<div style="flex:1;min-width:260px;"></div>
+		</div>
+		<div class="skill-category" data-category="Bahasa Pemrograman">
+			<div class="category-head">
+				<h3>Bahasa Pemrograman</h3>
+				<div class="category-desc muted-small">Masih pemula</div>
+			</div>
+			<div class="skill-list">
+				<div class="skill-row">
+					<div class="skill-label">JavaScript</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="69">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Lua</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="35">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">C++</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="25">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Python</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="46">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="skill-category" data-category="Skill Game">
+			<div class="category-head">
+				<h3>Skill Game</h3>
+				<div class="category-desc muted-small">Ane gak terlalu jago game online.</div>
+			</div>
+			<div class="skill-list">
+				<div class="skill-row">
+					<div class="skill-label">Pubg Mobile</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="85">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Honor Of Kings</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="74">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Mobile Legend</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="28">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Epep</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="999">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Valorant</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="39">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Roblox</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="87">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Game Offline</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="100">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="skill-category" data-category="Editing Gambar/Video">
+			<div class="category-head">
+				<h3>Editing (Gambar / Video)</h3>
+				<div class="category-desc muted-small">Tergantung mood bisa kagak nya</div>
+			</div>
+			<div class="skill-list">
+				<div class="skill-row">
+					<div class="skill-label">Capcut</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="100">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Alight Motion</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="86">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">After Effects</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="20">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">???</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="100">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</section>
+	<section id="about" class="page">
+	<div style="max-width:720px;margin:0 auto">
+		<h2>Tentang</h2>
+		<p class="muted-small">
+			Website ini hanya hasil kegabutan saya saja, yang berisikan konten dan informasi random tentang saya awokawok
+		</p>
+	</div>
+	</section>
+	<section id="timeline" class="page">
+	<div class="timeline-container" style="max-width:880px;margin:0 auto;padding:28px;">
+		<h2>Journey Timeline</h2>
+		<p class="muted-small">Perjalanan belajarku sampai sekarang</p>
+		<div class="timeline">
+			<div class="timeline-item" data-year="2019" data-animate>
+				<div class="timeline-dot"></div>
+				<div class="timeline-card">
+					<h3>2019</h3>
+					<p>
+						??
+					</p>
+				</div>
+			</div>
+			<div class="timeline-item" data-year="2020" data-animate>
+				<div class="timeline-dot"></div>
+				<div class="timeline-card">
+					<h3>2020</h3>
+					<p>
+						??
+					</p>
+				</div>
+			</div>
+			<div class="timeline-item" data-year="2022" data-animate>
+				<div class="timeline-dot"></div>
+				<div class="timeline-card">
+					<h3>2021</h3>
+					<p>
+						??
+					</p>
+				</div>
+			</div>
+			<div class="timeline-item" data-year="2024" data-animate>
+				<div class="timeline-dot"></div>
+				<div class="timeline-card">
+					<h3>2022</h3>
+					<p>
+						??
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	</section>
+	<audio id="bgMusic" src="./blue.mp3" preload="auto" hidden></audio>
+	<button id="themeToggle" class="theme-btn">
+	<span id="themeIcon">🌙</span>
+	</button>
+	<img id="floatingPet" src="./pet.gif" class="floating-pet" alt="pet" title="Teman mengambang"/>
+	
+	<audio id="sfxUwu" src="./uwu.mp3" preload="auto"></audio>
+	<audio id="sfxClick" src="assets/sounds/click.mp3" preload="auto"></audio>
 
-        <div class="skill-row">
-          <div class="skill-label">Lua</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="35"><span class="skill-fill"></span></div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
-
-        <div class="skill-row">
-          <div class="skill-label">C++</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="25"><span class="skill-fill"></span></div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
-
-        <div class="skill-row">
-          <div class="skill-label">Python</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="46"><span class="skill-fill"></span></div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="skill-category" data-category="Skill Game">
-      <div class="category-head">
-        <h3>Skill Game</h3>
-        <div class="category-desc muted-small">Ane gak terlalu jago game online.</div>
-      </div>
-      <div class="skill-list">
-        <div class="skill-row">
-          <div class="skill-label">Pubg Mobile</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="85"><span class="skill-fill"></span></div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
-
-        <div class="skill-row">
-          <div class="skill-label">Honor Of Kings</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="74"><span class="skill-fill"></span></div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
-
-        <div class="skill-row">
-          <div class="skill-label">Mobile Legend</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="28"><span class="skill-fill"></span></div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
-
-        <div class="skill-row">
-          <div class="skill-label">Epep</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="999"><span class="skill-fill"></span></div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
-
-        <div class="skill-row">
-          <div class="skill-label">Valorant</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="39"><span class="skill-fill"></span></div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
-
-        <div class="skill-row">
-          <div class="skill-label">Roblox</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="87"><span class="skill-fill"></span></div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
-
-        <div class="skill-row">
-          <div class="skill-label">Game Offline</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="100"><span class="skill-fill"></span></div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-
-    <div class="skill-category" data-category="Editing Gambar/Video">
-      <div class="category-head">
-        <h3>Editing (Gambar / Video)</h3>
-        <div class="category-desc muted-small">Tergantung mood bisa kagak nya</div>
-      </div>
-      <div class="skill-list">
-        <div class="skill-row">
-          <div class="skill-label">Capcut</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="100"><span class="skill-fill"></span></div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
-
-        <div class="skill-row">
-          <div class="skill-label">Alight Motion</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="86"><span class="skill-fill"></span></div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
-
-        <div class="skill-row">
-          <div class="skill-label">After Effects</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="20"><span class="skill-fill"></span></div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
-
-        <div class="skill-row">
-          <div class="skill-label">???</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar" data-percent="100"><span class="skill-fill"></span></div>
-            <div class="skill-percent">0%</div>
-          </div>
-        </div>
-      </div>
-    </div>
-   
-  </div>
-</section>
-
-
-
-    <section id="about" class="page">
-      <div style="max-width:720px;margin:0 auto">
-        <h2>Tentang</h2>
-        <p class="muted-small">Website ini hanya hasil kegabutan saya saja, yang berisikan konten dan informasi random tentang saya awokawok</p>
-      </div>
-    </section>
-    
-  </main>
-
-  <script type="module" src="app.js"></script>
-  <script type="module" src="skill.js"></script>
-  <script type="module" src="module.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</body>
-</html>
+	<div id="badgeToast" class="badge-toast" aria-hidden="true"></div>
+	<audio id="flipSound" src="./gojo.mp3" preload="auto"></audio>
+	<div class="love-rain" id="loveRain" aria-hidden="true"></div>
+	</main>
+	<script type="module" src="app.js"></script>
+	<script type="module" src="skill.js"></script>
+	<script type="module" src="module.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	</body>
+	</html>
