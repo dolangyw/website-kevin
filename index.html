@@ -51,7 +51,7 @@
 </aside>
 <main class="app" id="app">
 <section id="home" class="page active">
-<div class="center">
+<div class="center" style="max-width:480px;margin:0 auto;padding: 0; height: 460px;">
 	<div class="card-wrap" title="Klik kartu untuk flip">
 		<div class="card" id="profileCard" role="button" tabindex="0" aria-pressed="false">
 			<div class="card-face front" aria-hidden="false">
@@ -117,10 +117,10 @@
 	</div>
 	</section>
 	<section id="comments" class="page">
-	<div style="max-width:940px;margin:0 auto;">
+	<div style="width:100%;margin:0 auto;">
 		<h2 class="center" style="margin:0 0 12px 0">Komentar</h2>
 		<div class="comments-wrap" id="commentsWrap"></div>
-		<div style="margin-top:18px;max-width:720px;margin-left:auto;margin-right:auto;">
+		<div style="margin-top:18px;width:100%;margin-left:auto;margin-right:auto;">
 			<form id="commentForm" class="comment-form" onsubmit="return false;">
 				<input type="text" id="authorInput" placeholder="Nama (required)" required/>
 				<input type="text" id="commentInput" placeholder="Tulis komentar..." required/>
