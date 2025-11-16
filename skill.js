@@ -1,188 +1,232 @@
-/* --- Skill bars animation --- */
-(function(){
+
+(function () {
   const skillSection = document.getElementById('skill');
-  if(!skillSection) return;
+  if (!skillSection) return;
 
-  let animated = false;
 
-  function animateSkillBars(){
-    if(animated) return;
-    const bars = skillSection.querySelectorAll('.skill-bar');
-    bars.forEach((bar, i) => {
-      const fill = bar.querySelector('.skill-fill');
-      const percentEl = bar.parentElement.querySelector('.skill-percent');
-      const pct = parseInt(bar.getAttribute('data-percent') || '0', 10);
-      // stagger delay (ms)
-      const delay = i * 120;
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
 
-      // schedule actual width change (CSS transition)
-      setTimeout(()=> {
-        if(fill) fill.style.width = pct + '%';
-      }, delay);
-
-      // number animation (0 -> pct)
-      animateNumber(percentEl, pct, 900, delay);
-    });
-
-    animated = true;
-  }
-
-  // animate number with requestAnimationFrame
-  function animateNumber(el, to, duration = 800, startDelay = 0){
-    if(!el) return;
-    const start = performance.now() + startDelay;
-    const from = 0;
-    function step(now){
-      const elapsed = now - start;
-      if(elapsed < 0){
-        requestAnimationFrame(step);
-        return;
-      }
-      const t = Math.min(1, elapsed / duration);
-      const eased = easeOutCubic(t);
-      const current = Math.round(from + (to - from) * eased);
-      el.textContent = current + '%';
-      if(t < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
-  function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
-
-  // observe class changes on the skill section (active toggled by showPage)
-  const mo = new MutationObserver(muts => {
-    muts.forEach(m => {
-      if(m.attributeName === 'class'){
-        if(skillSection.classList.contains('active')) {
-          animateSkillBars();
-        }
-      }
-    });
-  });
-  mo.observe(skillSection, { attributes: true });
-
-  // if page already active on load, animate immediately
-  if(skillSection.classList.contains('active')){
-    setTimeout(animateSkillBars, 250);
-  }
-})();
-
-// skill.js — animate skill bars + draw radar chart using Chart.js
-(function(){
-  const skillSection = document.getElementById('skill');
-  if(!skillSection) return;
-
-  // Animate bars when section active or scrolled into view
-  function animateSkillBars(){
-    const bars = skillSection.querySelectorAll('.skill-bar');
-    bars.forEach((bar, i) => {
-      const fill = bar.querySelector('.skill-fill');
-      const pct = Math.min(100, parseInt(bar.getAttribute('data-percent') || '0', 10));
-      setTimeout(()=> {
-        fill.style.width = pct + '%';
-      }, i * 120);
-      // percent number
-      const percentEl = bar.parentElement.querySelector('.skill-percent');
-      if(percentEl){
-        animateNumber(percentEl, pct, 900, i * 120);
-      }
-    });
-  }
-
-  function animateNumber(el, to, duration = 800, delay = 0){
+  function animateNumber(el, to, duration = 800, delay = 0) {
+    if (!el) return;
     const start = performance.now() + delay;
     const from = 0;
-    function step(now){
+    function step(now) {
+      if (now < start) { requestAnimationFrame(step); return; }
       const t = Math.min(1, (now - start) / duration);
-      if(now < start) { requestAnimationFrame(step); return; }
-      const eased = 1 - Math.pow(1 - t, 3);
+      const eased = easeOutCubic(t);
       const cur = Math.round(from + (to - from) * eased);
       el.textContent = cur + '%';
-      if(t < 1) requestAnimationFrame(step);
+      if (t < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
   }
 
-  // use MutationObserver: when skill section gets class active -> animate once
-  let animated = false;
+
+  function readPct(bar) {
+    const raw = bar.getAttribute('data-percent') || '0';
+    const n = parseInt(raw, 10);
+    if (Number.isNaN(n)) return 0;
+    return Math.min(100, Math.max(0, n));
+  }
+
+ 
+  function getThemeVars() {
+    const s = getComputedStyle(document.documentElement);
+    const text = s.getPropertyValue('--text')?.trim() || s.getPropertyValue('color')?.trim() || '#111';
+    const muted = s.getPropertyValue('--muted')?.trim() || '#6b7280';
+    const accent = s.getPropertyValue('--accent')?.trim() || '#4f46e5';
+    const bg = s.getPropertyValue('--bg')?.trim() || '#fff';
+   
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  
+    const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(15,23,42,0.06)';
+    const angleColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(15,23,42,0.06)';
+    return { text, muted, accent, bg, isDark, gridColor, angleColor };
+  }
+
+  
+  let barsAnimated = false;
+  function animateSkillBarsOnce() {
+    if (barsAnimated) return;
+    const bars = skillSection.querySelectorAll('.skill-bar');
+    bars.forEach((bar, i) => {
+      const fill = bar.querySelector('.skill-fill');
+      const percentEl = bar.parentElement.querySelector('.skill-percent');
+      const pct = readPct(bar);
+      const delay = i * 120;
+  
+      setTimeout(() => {
+        if (fill) {
+          fill.style.transition = 'width 900ms cubic-bezier(.2,.9,.3,1)';
+          fill.style.width = pct + '%';
+        }
+      }, delay);
+     
+      animateNumber(percentEl, pct, 900, delay);
+    });
+    barsAnimated = true;
+  }
+
+
+  let _attempts = 0;
+  const MAX_ATTEMPTS = 12; 
+
+
+  function drawSkillChart() {
+    const canvas = document.getElementById('skillChart');
+    if (!canvas) return;
+    if (typeof Chart === 'undefined') {
+ 
+      if (_attempts < MAX_ATTEMPTS) {
+        _attempts++;
+        setTimeout(drawSkillChart, 500);
+      } else {
+        console.warn('Chart.js not available after retries.');
+      }
+      return;
+    }
+
+    const ctx = canvas.getContext('2d');
+
+    const labels = [
+      'Bahasa Pemrograman', 
+      'Skill Editing',      
+      'Rebahan',            
+      'Skill Game'         
+    ];
+    const dataVals = [
+      45,  
+      34,  
+      100, 
+      42   
+    ];
+
+    
+    const vars = getThemeVars();
+    const textColor = vars.text || '#111';
+    const gridColor = vars.gridColor;
+    const angleColor = vars.angleColor;
+    const accent = vars.accent || '#4f46e5';
+    const pointColor = getComputedStyle(document.documentElement).getPropertyValue('--point')?.trim() || '#06b6d4';
+
+   
+    if (window._skillChartInstance) {
+      try { window._skillChartInstance.destroy(); } catch (e) {  }
+    }
+
+    window._skillChartInstance = new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Skill level',
+          data: dataVals,
+          backgroundColor: 'rgba(79,70,229,0.12)', 
+          borderColor: accent,
+          pointBackgroundColor: pointColor || '#06b6d4',
+          borderWidth: 2,
+          pointRadius: 5,
+          fill: true,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          r: {
+            beginAtZero: true,
+            suggestedMax: 100,
+            ticks: {
+              stepSize: 100,
+              color: textColor
+            },
+            grid: { color: gridColor },
+            angleLines: { color: angleColor },
+            pointLabels: { color: textColor, font: { size: 13 } }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: true }
+        },
+        animation: { duration: 1000, easing: 'easeOutQuart' }
+      }
+    });
+  }
+
+ 
+  function updateSkillChartColors() {
+    if (!window._skillChartInstance) return;
+    const vars = getThemeVars();
+    const textColor = vars.text;
+    const gridColor = vars.gridColor;
+    const angleColor = vars.angleColor;
+    const accent = vars.accent || '#4f46e5';
+    const pointColor = getComputedStyle(document.documentElement).getPropertyValue('--point')?.trim() || '#06b6d4';
+
+    const chart = window._skillChartInstance;
+  
+    if (chart.data && chart.data.datasets && chart.data.datasets[0]) {
+      chart.data.datasets[0].borderColor = accent;
+      chart.data.datasets[0].backgroundColor = 'rgba(79,70,229,0.12)';
+      chart.data.datasets[0].pointBackgroundColor = pointColor;
+    }
+    
+    if (chart.options && chart.options.scales && chart.options.scales.r) {
+      chart.options.scales.r.ticks.color = textColor;
+      chart.options.scales.r.grid.color = gridColor;
+      chart.options.scales.r.angleLines.color = angleColor;
+      chart.options.scales.r.pointLabels.color = textColor;
+    }
+
+    try { chart.update(); } catch (e) {  }
+  }
+
+  
+  const htmlEl = document.documentElement;
+  const themeObserver = new MutationObserver(muts => {
+    for (const m of muts) {
+      if (m.type === 'attributes' && m.attributeName === 'data-theme') {
+        
+        updateSkillChartColors();
+      }
+    }
+  });
+  themeObserver.observe(htmlEl, { attributes: true });
+
+  
+  let animatedOnce = false;
   const mo = new MutationObserver(muts => {
     muts.forEach(m => {
-      if(m.attributeName === 'class' && skillSection.classList.contains('active')){
-        if(!animated){ animateSkillBars(); drawSkillChart(); animated = true; }
+      if (m.attributeName === 'class' && skillSection.classList.contains('active')) {
+        if (!animatedOnce) {
+          animateSkillBarsOnce();
+          drawSkillChart();
+          animatedOnce = true;
+        } else {
+         
+          if (!window._skillChartInstance) drawSkillChart();
+        }
       }
     });
   });
   mo.observe(skillSection, { attributes: true });
 
-  // initial if already active
-  if(skillSection.classList.contains('active')) { animateSkillBars(); drawSkillChart(); animated = true; }
-
-  // ---------- Chart.js radar chart ----------
-  function drawSkillChart(){
-  const canvas = document.getElementById('skillChart');
-  if(!canvas || !window.Chart) return;
-
-  const ctx = canvas.getContext('2d');
-
-  // Labels/data disusun supaya:
-  // index 0 = atas, index 1 = kanan, index 2 = bawah, index 3 = kiri
-  const labels = [
-    'Bahasa Pemrograman', // atas
-    'Skill Editing',      // kanan
-    'Rebahan',            // bawah
-    'Skill Game'          // kiri
-  ];
-  const dataVals = [
-    45,  // Bahasa Pemrograman (atas)
-    34,  // Skill Editing (kanan)
-    100, // Rebahan (bawah)
-    42   // Skill Game (kiri)
-  ];
-
-  // destroy existing chart if present
-  if(window._skillChartInstance){
-    try { window._skillChartInstance.destroy(); } catch(e){}
+ 
+  if (skillSection.classList.contains('active')) {
+    animateSkillBarsOnce();
+    drawSkillChart();
+    animatedOnce = true;
   }
 
-  window._skillChartInstance = new Chart(ctx, {
-    type: 'radar',
-    data: {
-      labels,
-      datasets: [{
-        label: 'Skill level',
-        data: dataVals,
-        backgroundColor: 'rgba(79,70,229,0.16)',
-        borderColor: '#4f46e5',
-        pointBackgroundColor: '#06b6d4',
-        borderWidth: 2,
-        pointRadius: 5,
-        fill: true,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        r: {
-          beginAtZero: true,
-          suggestedMax: 100,
-          ticks: {
-            stepSize: 100,
-            color: getComputedStyle(document.body).color
-          },
-          grid: { color: 'rgba(0,0,0,0.06)' },
-          angleLines: { color: 'rgba(0,0,0,0.06)' },
-          pointLabels: { color: getComputedStyle(document.body).color, font: { size: 13 } }
-        }
-      },
-      plugins: {
-        legend: { display: false },
-        tooltip: { enabled: true }
-      },
-      animation: { duration: 1000, easing: 'easeOutQuart' }
+
+  window.addEventListener('resize', () => {
+    if (window._skillChartInstance) {
+      try { window._skillChartInstance.resize(); } catch (e) {}
     }
   });
-}
 
+ 
+  window._refreshSkillChart = function () { drawSkillChart(); updateSkillChartColors(); };
 
 })();
