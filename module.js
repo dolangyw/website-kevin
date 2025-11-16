@@ -376,15 +376,21 @@ btn.onclick = () => {
   if(!notifRoot) return;
 
   notifRoot.innerHTML = `
-    <div class="inner">
-      <div class="notif-text">Gabung channel WhatsApp saya untuk update terbaru</div>
-      <div class="notif-actions">
-        <a id="notifJoin" class="btn" target="_blank" rel="noopener">Gabung WhatsApp</a>
-        <button id="notifClose" class="btn ghost">Tutup</button>
-      </div>
+<div class="inner">
+    <div class="notif-icon">🔔</div>
+    <div class="notif-body">
+      <div class="notif-title">Gabung channel WhatsApp saya</div>
+      <div class="notif-sub">Dapatkan update & konten eksklusif — klik gabung sekarang.</div>
     </div>
+
+    <div class="notif-actions">
+      <a id="notifJoin" class="btn cta" href="https://whatsapp.com/channel/0029VbBHn6LEAKWMipsflo35" target="_blank" rel="noopener">Gabung</a>
+      <button id="notifClose" class="btn ghost" aria-label="Tutup notifikasi">Tutup</button>
+    </div>
+  </div>
+
   `;
-  const joinUrl = 'https://chat.whatsapp.com/XXXXXXXXXXXX';
+  const joinUrl = 'https://whatsapp.com/channel/0029VbBHn6LEAKWMipsflo35';
   const joinBtn = document.getElementById('notifJoin');
   const closeBtn = document.getElementById('notifClose');
   joinBtn.href = joinUrl;
