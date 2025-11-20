@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Kevin Fernando</title>
+<link rel="stylesheet" href="./style.css"/>
+<link rel="manifest" href="./manifest.json"/>
+<meta name="theme-color" content="#4f46e5"/>
+<link rel="icon" href="./pet.gif"/>
+</head>
+<body>
+
+<div id="loadingOverlay" class="loading-overlay" role="status" aria-live="polite">
+	<div class="loader-box" role="img" aria-label="Loading content">
+		<div class="logo-outer" aria-hidden="true">
+			<div class="logo-core"></div>
+			<svg class="logo-ring" viewbox="0 0 100 100" aria-hidden="true">
+			<circle cx="50" cy="50" r="44" stroke-width="4" fill="none"/>
+			</svg>
+		</div>
+		<div class="loader-title">Memuat situs...</div>
+		<div class="loader-bar" aria-hidden="true">
+			<div class="loader-fill" id="loadingFill"></div>
+			<div class="loader-shimmer"></div>
+		</div>
+		<div class="loader-bottom">
+			<div class="loader-percent" id="loadingPercent">0%</div>
+			<div class="loader-hint muted-small">Klik di mana saja untuk memulai interaksi</div>
+		</div>
+	</div>
+	<div id="loaderParticles" class="loader-particles" aria-hidden="true"></div>
+</div>
+<div id="particles" aria-hidden="true"></div>
+<div id="topNotification" class="top-notification" aria-hidden="true"></div>
+<button id="menuBtn" class="menu-btn" aria-label="Buka menu" aria-expanded="false" title="Menu">
+ 
+  <svg width="20" height="16" viewBox="0 0 20 16" fill="none" aria-hidden="true">
+    <rect y="1" width="20" height="2" rx="1" fill="currentColor"></rect>
+    <rect y="7" width="20" height="2" rx="1" fill="currentColor"></rect>
+    <rect y="13" width="20" height="2" rx="1" fill="currentColor"></rect>
+  </svg>
+</button>
+
+
+<div id="drawerOverlay" class="drawer-overlay" aria-hidden="true"></div>
+
+
+<aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Main menu">
+  <header class="drawer-head">
+    <div class="drawer-title">
+      <strong class="center">Menu</strong>
+      <small class="drawer-sub">Mwehehehe</small>
+    </div>
+    <button id="drawerClose" class="drawer-close" aria-label="Tutup menu"></button>
+  </header>
+
+  <div class="drawer-search">
+    <input id="menuSearch" type="search" placeholder="Cari halaman..." aria-label="Cari menu" />
+  </div>
+
+  <nav class="drawer-nav" aria-label="Main navigation">
+    <ul class="nav-list">
+      <li><a class="nav-link" href="#" data-page="home">Profile</a></li>
+    <li><a class="nav-link" href="#" data-page="dashboard">Dashboard</a></li>
+
+      <li class="has-sub">
+        <button class="sub-toggle" aria-expanded="false">
+          Informasi <svg class="chev" width="12" height="12" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <ul class="sub-list">
+          <li><a class="nav-link" href="#" data-page="skill">Skill (Overview)</a></li>
+          <li><a class="nav-link" href="#" data-page="timeline">Timeline</a></li>
+        </ul>
+      </li>
+
+	  <li class="has-sub">
+        <button class="sub-toggle" aria-expanded="false">
+          Story <svg class="chev" width="12" height="12" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <ul class="sub-list">
+		<li><a class="nav-link" href="#" data-page="coming">My Story</a></li>
+          <li><a class="nav-link" href="#" data-page="memories">Girlfriend</a></li>
+
+        </ul>
+      </li>
+      
+      <li class="has-sub">
+        <button class="sub-toggle" aria-expanded="false">
+          Community <svg class="chev" width="12" height="12" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <ul class="sub-list">
+		<li><a class="nav-link" href="#" data-page="comments">Komentar</a></li>
+          <li><a class="nav-link" href="#" data-page="coming">??</a></li>
+
+        </ul>
+      </li>
+      
+	  <li class="has-sub">
+        <button class="sub-toggle" aria-expanded="false">
+          Utility <svg class="chev" width="12" height="12" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <ul class="sub-list">
+          <li><a class="nav-link" href="#" data-page="coming">Chat bot</a></li>
+		  <li><a class="nav-link" href="#" data-page="poster">Poster</a></li>
+		  <li><a class="nav-link" href="#" data-page="collage">Collage</a></li>
+		  <li><a class="nav-link" href="#" data-page="font">Font Text</a></li>
+        </ul>
+      </li>
+      
+      <li><a class="nav-link" href="#" data-page="about">Tentang</a></li>
+	<li class="has-sub admin-only" aria-hidden="true">
+        <button class="sub-toggle" aria-expanded="false">
+          Admin <svg class="chev" width="12" height="12" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <ul class="sub-list">
+            <li><a class="nav-link" href="#" data-page="memories-upload">Upload Memories</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="drawer-foot">
+    <div class="small-muted">Ada beberapa easter egg di website ini</div>
+    <div class="drawer-actions">
+      <button id="themeToggleSmall" class="btn ghost">Whatsapp</button>
+      <a class="btn" href="https://wa.me/6283899513158" id="contactBtn">Contact</a>
+    </div>
+  </div>
+</aside>
+<main class="app" id="app">
+	
+<section id="home" class="page active">
+	
+<div class="center" style="max-width:480px;margin:0 auto;padding: 0; height: 460px;">
+	<div class="card-wrap" title="Klik kartu untuk flip">
+		<div class="card" id="profileCard" role="button" tabindex="0" aria-pressed="false">
+			<div class="card-face front" aria-hidden="false">
+				<div class="alt-avatar" id="frontAvatar">
+					<img style="width:100%;height:100%;object-fit:cover;display:block;" src="https://i.ibb.co.com/gZBfwYLY/IMG-20251021-145934.jpg" alt="avatar"/>
+				</div>
+				<div class="name animated-title" id="animatedTitle">Kevin Fernando</div>
+				<div class="desc" id="frontDesc">
+					Game Developer & Full Stack Developer. Saya suka membuat dan memperbaiki kode program.
+				</div>
+				<div class="flip-hint">heker wibu tzy.</div>
+			</div>
+			<div class="card-face back" aria-hidden="true">
+				<div class="alt-avatar avatar" id="backAvatar">
+					<img src="https://iili.io/fHAQWfs.jpg" alt="avatar2">
+					<div class="badge5">
+						<img src="https://iili.io/fHAbEvf.gif" alt="badge"/>
+					</div>
+				</div>
+				<div class="name" id="backName">Rany Amelia Sari</div>
+				<div class="desc">
+					dia adalah mykisah >//<.</div>
+					<div class="desc muted-small">hanya watashi yang boleh mendekatinya.</div>
+					<div class="flip-hint">heker</div>
+				</div>
+				<img class="side-img left-img" src="./gojo1.png" alt="left">
+			</div>
+		</div>
+	</div>
+	</section>
+	<section id="dashboard" class="page">
+	<div class="dash-container" style="max-width:980px;margin:0 auto;padding:18px;">
+		<h2>Dashboard</h2>
+		<p class="muted-small">Statistik realtime & ringkasan penggunaan website.</p>
+		<div class="dash-grid">
+			<div class="dash-card" id="cardTotalVisits">
+				<div class="dash-title">Total Visits</div>
+				<div class="dash-value" id="totalVisits">—</div>
+				<div class="dash-sub muted-small">Unique visitors / semua waktu</div>
+			</div>
+			<div class="dash-card" id="cardTodayVisits">
+				<div class="dash-title">Visits Hari Ini</div>
+				<div class="dash-value" id="todayVisits">—</div>
+				<div class="dash-sub muted-small">Visits berdasarkan tanggal lokal</div>
+			</div>
+			<div class="dash-card" id="cardUnique">
+				<div class="dash-title">Unique Visitors</div>
+				<div class="dash-value" id="uniqueVisitors">—</div>
+				<div class="dash-sub muted-small">Berdasarkan localStorage id</div>
+			</div>
+			<div class="dash-card" id="cardAvgSession">
+				<div class="dash-title">Avg Session (s)</div>
+				<div class="dash-value" id="avgSession">—</div>
+				<div class="dash-sub muted-small">Durasi rata2 sesi (perkiraan)</div>
+			</div>
+		</div>
+		<div style="margin-top:18px;">
+			<div class="dash-panel">
+				<div class="panel-head">Komentar Terbaru</div>
+				<div id="recentComments" class="recent-comments muted-small">memuat…</div>
+			</div>
+		</div>
+	</div>
+	</section>
+	<section id="comments" class="page">
+	<div style="width:100%;margin:0 auto;">
+		<h2 class="center" style="margin:0 0 12px 0">Komentar</h2>
+		<div class="comments-wrap" id="commentsWrap"></div>
+		<div style="margin-top:18px;width:100%;margin-left:auto;margin-right:auto;">
+			<form id="commentForm" class="comment-form" onsubmit="return false;">
+				<input type="text" id="authorInput" placeholder="Nama (required)" required/>
+				<input type="text" id="commentInput" placeholder="Tulis komentar..." required/>
+				<button class="btn" id="sendBtn" type="submit">Kirim</button>
+			</form>
+			<div style="margin-top:8px" class="small-muted">Jangan komen aneh aneh bang:v</div>
+		</div>
+	</div>
+	</section>
+	<section id="skill" class="page">
+	<div class="skill-container" style="max-width:960px;margin:0 auto;padding:18px;">
+		<h2 style="margin:0 0 8px 0">Skill</h2>
+		<p class="muted-small" style="margin-bottom:18px;">
+			 Saya memiliki beberapa kemampuan dibidang anu. Berikut beberapa kemampuan saya dibidang anu
+		</p>
+		<div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px;">
+			<div style="flex:1;min-width:260px;">
+				<canvas id="skillChart" width="400" height="400"></canvas>
+			</div>
+			<div style="flex:1;min-width:260px;"></div>
+		</div>
+		<div class="skill-category" data-category="Bahasa Pemrograman">
+			<div class="category-head">
+				<h3>Bahasa Pemrograman</h3>
+				<div class="category-desc muted-small">Masih pemula</div>
+			</div>
+			<div class="skill-list">
+				<div class="skill-row">
+					<div class="skill-label">JavaScript</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="69">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Lua</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="35">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">C++</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="25">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Python</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="46">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="skill-category" data-category="Skill Game">
+			<div class="category-head">
+				<h3>Skill Game</h3>
+				<div class="category-desc muted-small">Ane gak terlalu jago game online.</div>
+			</div>
+			<div class="skill-list">
+				<div class="skill-row">
+					<div class="skill-label">Pubg Mobile</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="85">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Honor Of Kings</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="74">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Mobile Legend</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="28">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Epep</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="999">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Valorant</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="39">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Roblox</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="87">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Game Offline</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="100">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="skill-category" data-category="Editing Gambar/Video">
+			<div class="category-head">
+				<h3>Editing (Gambar / Video)</h3>
+				<div class="category-desc muted-small">Tergantung mood bisa kagak nya</div>
+			</div>
+			<div class="skill-list">
+				<div class="skill-row">
+					<div class="skill-label">Capcut</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="100">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">Alight Motion</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="86">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">After Effects</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="20">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+				<div class="skill-row">
+					<div class="skill-label">???</div>
+					<div class="skill-bar-wrap">
+						<div class="skill-bar" data-percent="100">
+							<span class="skill-fill"></span>
+						</div>
+						<div class="skill-percent">0%</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</section>
+	<section id="about" class="page">
+	<div style="max-width:720px;margin:0 auto">
+		<h2>Tentang</h2>
+		<p class="muted-small">
+			Website ini hanya hasil kegabutan saya saja, yang berisikan konten dan informasi random tentang saya awokawok
+		</p>
+	</div>
+	</section>
+	<section id="timeline" class="page">
+	<div class="timeline-container" style="max-width:880px;margin:0 auto;padding:28px;">
+		<h2>Journey Timeline</h2>
+		<p class="muted-small">Perjalanan belajarku sampai sekarang</p>
+		<div class="timeline">
+			<div class="timeline-item" data-year="2019" data-animate>
+				<div class="timeline-dot"></div>
+				<div class="timeline-card">
+					<h3>2019</h3>
+					<p>
+						??
+					</p>
+				</div>
+			</div>
+			<div class="timeline-item" data-year="2020" data-animate>
+				<div class="timeline-dot"></div>
+				<div class="timeline-card">
+					<h3>2020</h3>
+					<p>
+						??
+					</p>
+				</div>
+			</div>
+			<div class="timeline-item" data-year="2022" data-animate>
+				<div class="timeline-dot"></div>
+				<div class="timeline-card">
+					<h3>2021</h3>
+					<p>
+						??
+					</p>
+				</div>
+			</div>
+			<div class="timeline-item" data-year="2024" data-animate>
+				<div class="timeline-dot"></div>
+				<div class="timeline-card">
+					<h3>2022</h3>
+					<p>
+						??
+					</p>
+				</div>
+			</div>
+			<div class="timeline-item" data-year="2019" data-animate>
+				<div class="timeline-dot"></div>
+				<div class="timeline-card">
+					<h3>2023</h3>
+					<p>
+						??
+					</p>
+				</div>
+			</div>
+			<div class="timeline-item" data-year="2020" data-animate>
+				<div class="timeline-dot"></div>
+				<div class="timeline-card">
+					<h3>2024</h3>
+					<p>
+						??
+					</p>
+				</div>
+			</div>
+			<div class="timeline-item" data-year="2022" data-animate>
+				<div class="timeline-dot"></div>
+				<div class="timeline-card">
+					<h3>2025</h3>
+					<p>
+						??
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	</section>
+
+	
+<section id="memories-upload" class="page">
+  <div style="max-width:760px;margin:0 auto;padding:18px;">
+    <h2 class="animated-title">Unggah Kenangan</h2>
+    <p class="muted-small">Isi URL gambar (foto kenangan), judul, dua deskripsi singkat — tanggal tercatat otomatis.</p>
+
+    <form id="memUploadForm" class="comment-form" style="flex-direction:column;gap:12px;max-width:720px;">
+      <input type="text" id="memImageUrl" placeholder="URL gambar (http...) *" required />
+      <input type="text" id="memTitle" placeholder="Judul kenangan *" required />
+      <input type="text" id="memDesc1" placeholder="Deskripsi 1" />
+      <input type="text" id="memDesc2" placeholder="Deskripsi 2" />
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn" id="memUploadBtn" type="submit">Upload Kenangan</button>
+        <button class="btn ghost" id="memPreviewBtn" type="button">Preview</button>
+        <div class="small-muted" style="margin-left:auto">Tanggal otomatis disimpan saat upload</div>
+      </div>
+      <div id="memPreview" style="display:none;margin-top:8px;border-radius:10px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.06)"></div>
+    </form>
+  </div>
+</section>
+
+
+<section id="memories" class="page">
+<div class="memories-hero parallax-section" data-speed="0.18">
+    <div class="hero-left parallax-content">
+      <div class="badge">💖 Kenangan #Moments</div>
+      <h1 class="" id="memTitle">Lagu & Kenangan Kita</h1>
+      <p class="hero-desc muted-small">Setiap lagu punya cerita. Gulir ke bawah untuk melihat momen-momen berharga — dari awal sampai sekarang.</p>
+      <div class="playlist-controls">
+        <button class="btn ghost" id="orderToggle" aria-pressed="false">Urut: Terlama → Terbaru</button>
+      </div>
+    </div>
+    <div class="hero-right parallax-content">
+      <div class="hero-card">
+        <img id="heroImg" src="https://media.istockphoto.com/id/1536045092/id/vektor/pria-dan-wanita-saling-berhadapan-dan-tertawa.jpg?s=170667a&w=0&k=20&c=rGn51X138WzPje2fyR_8L4TME2kU64-FsAsYCaVOe2s=" alt="hero photo" loading="lazy">
+        
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="playlist-section">
+    <h2 class="section-title" style="max-width:1100px;margin:12px auto 6px auto;padding:0 18px">Our Playlist</h2>
+    <a class="muted-small" style="max-width:1100px;margin:0 auto 12px;padding:0 18px">Pilih lagu — setiap lagu punya kenangan.</a>
+    <div class="playlist-grid" id="playlistGrid"></div>
+  </div>
+   <br/>
+   <br/>
+   <br/>
+   <br/>
+  <h1 class="animatedTitle center memories-list typewriter" style="font-size: 30px;" id="slowScrollBtn">Kenangan Kita</h1>
+  <p class="hero-desc muted-small center" style="margin-top: -20px;">Ini adalah kenang-kenangan kita sampai sekarang.</p>
+  <br/>
+  <br/>
+  
+  <div class="memories-list" id="memoriesList" aria-live="polite"></div>
+
+  
+  <audio id="audioPlayer" preload="auto"></audio>
+
+  
+  <div class="player-visualizer" id="playerViz" aria-hidden="true">
+    <div class="viz-bar"><div class="viz-fill" id="vizFill"></div></div>
+  </div>
+</section>
+
+
+<section id="poster" class="page" style="display:none; padding:18px; max-width:1100px; margin:0 auto;">
+  <h2 style="margin-top:0">Poster Generator</h2>
+  <div style="display:flex;gap:18px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:320px;">
+      <div style="border-radius:12px;overflow:hidden;padding:12px;background:var(--card-bg);box-shadow:0 10px 24px rgba(2,6,23,0.06)">
+        <canvas id="posterCanvas" width="1200" height="675" style="width:100%;display:block;border-radius:8px;background:#111"></canvas>
+        <small class="muted-small">Klik canvas untuk memindahkan posisi teks.</small>
+      </div>
+    </div>
+
+    <aside style="width:320px;max-width:100%">
+      <div style="background:var(--card-bg);padding:12px;border-radius:12px;box-shadow:0 8px 20px rgba(2,6,23,0.04)">
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <input id="posterFile" type="file" accept="image/*" />
+          <input id="bgColor" type="color" value="#07122a" title="Background color" />
+        </div>
+
+        <div style="margin-bottom:8px">
+          <label class="muted-small">Text</label>
+          <input id="posterText" type="text" value="Kenangan Indah" style="width:100%;padding:8px;border-radius:8px" />
+        </div>
+
+        <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center">
+          <div style="flex:1">
+            <label class="muted-small">Font</label>
+            <select id="posterFont" style="width:100%;padding:8px;border-radius:8px">
+              <option value="48px serif">Serif (classic)</option>
+              <option value="48px Arial">Arial</option>
+              <option value="48px Georgia">Georgia</option>
+              <option value="48px 'Courier New'">Monospace</option>
+            </select>
+          </div>
+          <div style="width:80px">
+            <label class="muted-small">Size</label>
+            <input id="posterSize" type="number" value="48" min="12" max="200" style="width:100%;padding:8px;border-radius:8px" />
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+          <input id="posterColor" type="color" value="#ffffff" />
+          <label class="muted-small" style="margin-left:6px">Text color</label>
+        </div>
+
+        <div style="display:flex;gap:8px">
+          <button id="downloadPoster" class="btn">Export PNG</button>
+          <button id="resetPoster" class="btn ghost">Reset</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+
+<section id="collage" class="page" style="display:none; padding:18px; max-width:1100px;margin:0 auto;">
+  <h2 style="margin-top:0">Collage Maker</h2>
+  <div style="display:flex;gap:18px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:320px;">
+      <div style="background:var(--card-bg);padding:12px;border-radius:12px;box-shadow:0 8px 20px rgba(2,6,23,0.04)">
+        <canvas id="collageCanvas" width="1200" height="800" style="width:100%;display:block;border-radius:8px;background:#0b1220"></canvas>
+        <small class="muted-small">Unggah foto, klik Render lalu export.</small>
+      </div>
+    </div>
+
+    <aside style="width:320px;max-width:100%">
+      <div style="background:var(--card-bg);padding:12px;border-radius:12px;box-shadow:0 8px 20px rgba(2,6,23,0.04)">
+        <div class="uploader" style="padding:8px;border-radius:8px;margin-bottom:8px">
+          <input id="collageFiles" type="file" accept="image/*" multiple />
+          <div id="thumbs" class="thumbs" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px"></div>
+        </div>
+
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+          <div style="flex:1">
+            <label class="muted-small">Columns</label>
+            <input id="cols" type="number" value="3" min="1" max="6" style="width:100%;padding:8px;border-radius:8px" />
+          </div>
+          <div style="width:100px">
+            <label class="muted-small">Gap</label>
+            <input id="gap" type="number" value="8" min="0" max="60" style="width:100%;padding:8px;border-radius:8px" />
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px">
+          <button id="renderCollage" class="btn">Render</button>
+          <button id="downloadCollage" class="btn ghost">Export PNG</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+
+<section id="font" class="page" style="display:none; padding:18px; max-width:1100px;margin:0 auto;">
+  <h2 style="margin-top:0">Font Changer</h2>
+  <div style="display:flex;gap:18px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:320px;">
+      <div style="background:var(--card-bg);padding:12px;border-radius:12px;box-shadow:0 8px 20px rgba(2,6,23,0.04)">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+          <input id="fontFile" type="file" accept=".woff,.ttf,.otf" />
+          <select id="fontSelect" style="flex:1;padding:8px;border-radius:8px">
+            <option value="Inter, system-ui, Arial">Inter / System</option>
+            <option value="Georgia, serif">Georgia</option>
+            <option value="'Courier New', monospace">Courier New</option>
+            <option value="Verdana, sans-serif">Verdana</option>
+          </select>
+        </div>
+
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+          <label class="muted-small">Size</label>
+          <input id="fontSize" type="number" value="18" min="8" max="120" style="width:100px;padding:8px;border-radius:8px" />
+          <label class="muted-small">Weight</label>
+          <select id="fontWeight" style="width:120px;padding:8px;border-radius:8px">
+            <option value="400">400</option><option value="500">500</option><option value="600">600</option><option value="700">700</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom:8px">
+          <label class="muted-small">Preview text</label>
+          <input id="previewText" type="text" value="Ini contoh teks preview" style="width:100%;padding:8px;border-radius:8px" />
+        </div>
+
+        <div style="display:flex;gap:8px">
+          <button id="applyFont" class="btn">Apply ke preview</button>
+          <button id="copyCSS" class="btn ghost">Copy CSS</button>
+        </div>
+      </div>
+    </div>
+
+    <aside style="width:320px;max-width:100%">
+      <div style="background:var(--card-bg);padding:12px;border-radius:12px;box-shadow:0 8px 20px rgba(2,6,23,0.04)">
+        <div id="fontPreview" class="preview" style="min-height:120px;border-radius:8px;padding:12px">Contoh Teks — huruf & ukuran akan berubah di sini.</div>
+        <small class="muted-small">Upload font (.woff/.ttf) untuk dipakai di preview.</small>
+      </div>
+    </aside>
+  </div>
+</section>
+
+
+<section id="coming" class="page under-construction" style="display:none; padding:28px; max-width:1100px; margin:0 auto;">
+  <div class="uc-card">
+    <div class="uc-left">
+      <h2 class="">Halaman Sedang Dibuat</h2>
+      <p class="uc-subtitle" id="ucSubtitle">Kami sedang menyiapkan sesuatu yang spesial. Sabar sebentar — ini akan segera hadir.</p>
+
+      <div class="uc-progress" aria-hidden="true">
+        <div class="uc-progress-bar"><i></i></div>
+        <small class="muted-small">Progres pembangunan — estimasi visual</small>
+      </div>
+
+    
+
+      <div class="uc-hint">
+        <small class="muted-small">Jika ingin bantuan atau ide, hubungi kami melalui menu kontak.</small>
+      </div>
+    </div>
+
+    <div class="uc-right">
+      
+      <div class="uc-canvas-wrap">
+        <canvas id="comingCanvas" aria-hidden="true"></canvas>
+        
+        <div class="uc-badge">Under construction</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+	<audio id="bgMusic" src="./blue.mp3" preload="auto" hidden></audio>
+	<button id="themeToggle" class="theme-btn">
+	<span id="themeIcon">🌙</span>
+	</button>
+	<img id="floatingPet" src="./pet.gif" class="floating-pet" alt="pet" title="Teman mengambang"/>
+	
+	<audio id="sfxUwu" src="./uwu.mp3" preload="auto"></audio>
+	<audio id="sfxClick" src="assets/sounds/click.mp3" preload="auto"></audio>
+
+	<div id="badgeToast" class="badge-toast" aria-hidden="true"></div>
+	<audio id="flipSound" src="./gojo.mp3" preload="auto"></audio>
+	<div class="love-rain" id="loveRain" aria-hidden="true"></div>
+	</main>
+
+<script>
+document.getElementById("slowScrollBtn").addEventListener("click", function () {
+
+    const speed = 0.5;
+    const delay = 10;
+
+    const interval = setInterval(() => {
+
+        window.scrollBy(0, speed);
+
+      
+        const atBottom =
+            window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 1;
+
+        if (atBottom) {
+            clearInterval(interval);
+        }
+
+    }, delay);
+
+});
+</script>
+<script type="module" src="user.js"></script>
+	<script type="module" src="app.js"></script>
+	<script type="module" src="skill.js"></script>
+	<script type="module" src="module.js"></script>
+	<script type="module" src="utility.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	</body>
+	</html>
